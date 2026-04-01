@@ -1,0 +1,356 @@
+/* =============================================================================
+   WP AI SEO — 后台样式
+   ============================================================================= */
+
+/* ---- 侧边 SEO Box ---- */
+#wp-ai-seo-box {
+    font-size: 13px;
+}
+
+.wp-ai-seo-note {
+    color: #666;
+    margin: 0 0 10px;
+    font-style: italic;
+}
+
+.wp-ai-seo-field {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.wp-ai-seo-field:last-child {
+    border-bottom: none;
+}
+
+.wp-ai-seo-field label {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.wp-ai-seo-field .description {
+    display: block;
+    color: #888;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.wp-ai-seo-counter {
+    display: block;
+    text-align: right;
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 2px;
+}
+
+/* ---- 按钮区 ---- */
+.wp-ai-seo-actions {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.wp-ai-seo-btn {
+    font-size: 12px !important;
+    padding: 4px 10px !important;
+    height: auto !important;
+}
+
+.wp-ai-seo-spinner {
+    float: none !important;
+    margin: 0 !important;
+}
+
+/* ---- 预览卡片 ---- */
+.wp-ai-seo-preview,
+.wp-ai-tags-preview {
+    margin-top: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.wp-ai-seo-result h4 {
+    margin: 0 0 8px;
+    font-size: 13px;
+    color: #1d2327;
+}
+
+.wp-ai-result-row {
+    margin-bottom: 6px;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.wp-ai-result-row .label {
+    font-weight: 600;
+    white-space: nowrap;
+    color: #555;
+    min-width: 52px;
+}
+
+.wp-ai-result-row .value {
+    flex: 1;
+    word-break: break-all;
+    color: #2271b1;
+}
+
+.wp-ai-seo-result-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+}
+
+/* ---- 标签选择 ---- */
+.wp-ai-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0;
+}
+
+.wp-ai-tag-item {
+    background: #e7f3ff;
+    border: 1px solid #b3d4fb;
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.15s;
+}
+
+.wp-ai-tag-item:hover {
+    background: #cce5ff;
+}
+
+.wp-ai-tag-item input[type="checkbox"] {
+    margin: 0;
+}
+
+.wp-ai-tags-actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 6px;
+}
+
+/* =============================================================================
+   正文生成 Box
+   ============================================================================= */
+
+#wp-ai-content-box {
+    padding: 4px 0;
+}
+
+#wp-ai-content-box p {
+    margin-top: 0;
+    color: #555;
+}
+
+.wp-ai-content-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.wp-ai-content-meta select {
+    padding: 4px 8px;
+    font-size: 13px;
+}
+
+/* ---- 进度条 ---- */
+#wp-ai-content-progress {
+    margin: 12px 0;
+}
+
+.wp-ai-progress-bar {
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.wp-ai-progress-inner {
+    height: 100%;
+    background: linear-gradient(90deg, #2271b1, #72aee6);
+    border-radius: 4px;
+    transition: width 0.6s ease;
+    width: 0%;
+}
+
+#wp-ai-progress-text {
+    font-size: 12px;
+    color: #666;
+}
+
+/* ---- 错误提示 ---- */
+.wp-ai-error {
+    margin-top: 10px;
+}
+
+.wp-ai-error p {
+    margin: 0;
+    padding: 8px 12px;
+}
+
+/* ---- 成功消息 ---- */
+.wp-ai-success-msg {
+    margin-left: 8px;
+    color: #1a7a1a;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* =============================================================================
+   生成内容中的表格样式（wp-ai-seo-table 注入到正文）
+   ============================================================================= */
+
+.wp-ai-seo-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 16px 0;
+    font-size: 14px;
+}
+
+.wp-ai-seo-table th,
+.wp-ai-seo-table td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.wp-ai-seo-table thead tr {
+    background: #2271b1;
+    color: #fff;
+}
+
+.wp-ai-seo-table tbody tr:nth-child(even) {
+    background: #f6f8fa;
+}
+
+.wp-ai-seo-table tbody tr:hover {
+    background: #eaf4ff;
+}
+
+/* =============================================================================
+   设置页
+   ============================================================================= */
+
+.wp-ai-seo-settings-hint {
+    color: #888;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* =============================================================================
+   SEO 评分
+   ============================================================================= */
+
+#wp-ai-seo-score-result {
+    margin-top: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 12px;
+}
+
+.wp-ai-score-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.wp-ai-score-circle {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    border: 4px solid #ccc;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.wp-ai-score-circle.excellent { border-color: #1a7a1a; }
+.wp-ai-score-circle.good      { border-color: #c09000; }
+.wp-ai-score-circle.fair      { border-color: #e67e22; }
+.wp-ai-score-circle.poor      { border-color: #c0392b; }
+
+.wp-ai-score-num {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    color: #1d2327;
+}
+
+.wp-ai-score-circle.excellent .wp-ai-score-num { color: #1a7a1a; }
+.wp-ai-score-circle.good      .wp-ai-score-num { color: #c09000; }
+.wp-ai-score-circle.fair      .wp-ai-score-num { color: #e67e22; }
+.wp-ai-score-circle.poor      .wp-ai-score-num { color: #c0392b; }
+
+.wp-ai-score-den {
+    font-size: 10px;
+    color: #999;
+    line-height: 1;
+}
+
+.wp-ai-score-grade {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.wp-ai-score-grade.excellent { color: #1a7a1a; }
+.wp-ai-score-grade.good      { color: #c09000; }
+.wp-ai-score-grade.fair      { color: #e67e22; }
+.wp-ai-score-grade.poor      { color: #c0392b; }
+
+.wp-ai-score-details {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wp-ai-score-item {
+    padding: 4px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.wp-ai-score-item:last-child { border-bottom: none; }
+.wp-ai-score-item.ok         { color: #1a7a1a; }
+.wp-ai-score-item.fail       { color: #b32d2e; }
+
+/* =============================================================================
+   原正文备份面板
+   ============================================================================= */
+
+.wp-ai-original-panel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: #f0f6fc;
+    border: 1px solid #b3cde8;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: #444;
+}
+
+#wp-ai-original-info {
+    flex: 1;
+}
