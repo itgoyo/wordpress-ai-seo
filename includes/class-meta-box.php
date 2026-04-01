@@ -46,10 +46,19 @@ class WP_AI_SEO_Meta_Box {
         $seo_kw      = get_post_meta( $post->ID, '_wp_ai_seo_keywords',    true );
         $seo_desc    = get_post_meta( $post->ID, '_wp_ai_seo_description', true );
         $site_url    = get_post_meta( $post->ID, '_wp_ai_seo_site_url',    true );
+        $ref_content = get_post_meta( $post->ID, '_wp_ai_seo_ref_content', true );
         ?>
         <div id="wp-ai-seo-box">
 
             <p class="wp-ai-seo-note">留空字段将由 AI 生成，也可手动填写。</p>
+
+            <div class="wp-ai-seo-field">
+                <label for="wp_ai_seo_ref_content"><strong>📋 参考内容</strong></label>
+                <textarea id="wp_ai_seo_ref_content" name="wp_ai_seo_ref_content"
+                          rows="6" class="widefat wp-ai-ref-content"
+                          placeholder="在此粘贴原始资料、套餐数据、产品参数等内容，AI 将据此整理成对比表格并生成 SEO 文章。字数不限。"><?php echo esc_textarea( $ref_content ); ?></textarea>
+                <span class="description">支持套餐/价格对比、产品规格、原始笔记等。与参考站点 URL 可同时使用。</span>
+            </div>
 
             <div class="wp-ai-seo-field">
                 <label for="wp_ai_seo_site_url"><strong>参考站点 URL</strong></label>
@@ -188,6 +197,7 @@ class WP_AI_SEO_Meta_Box {
             'wp_ai_seo_keywords'    => '_wp_ai_seo_keywords',
             'wp_ai_seo_description' => '_wp_ai_seo_description',
             'wp_ai_seo_site_url'    => '_wp_ai_seo_site_url',
+            'wp_ai_seo_ref_content' => '_wp_ai_seo_ref_content',
         );
 
         foreach ( $fields as $post_key => $meta_key ) {
@@ -195,7 +205,7 @@ class WP_AI_SEO_Meta_Box {
 
             if ( $post_key === 'wp_ai_seo_site_url' ) {
                 $value = esc_url_raw( $raw );
-            } elseif ( $post_key === 'wp_ai_seo_description' ) {
+            } elseif ( in_array( $post_key, array( 'wp_ai_seo_description', 'wp_ai_seo_ref_content' ), true ) ) {
                 $value = sanitize_textarea_field( $raw );
             } else {
                 $value = sanitize_text_field( $raw );

@@ -20,6 +20,10 @@
     return $('#wp_ai_seo_site_url').val() || '';
   }
 
+  function getRefContent() {
+    return $('#wp_ai_seo_ref_content').val() || '';
+  }
+
   function showSpinner($btn, $spinner) {
     $btn.prop('disabled', true);
     $spinner.addClass('is-active');
@@ -72,11 +76,12 @@
       $preview.hide().empty();
 
       $.post(wpAiSeo.ajaxUrl, {
-        action:     'wp_ai_seo_generate_seo',
-        nonce:      wpAiSeo.nonce,
-        post_id:    wpAiSeo.postId,
-        title:      title,
-        site_url:   siteUrl,
+        action:      'wp_ai_seo_generate_seo',
+        nonce:       wpAiSeo.nonce,
+        post_id:     wpAiSeo.postId,
+        title:       title,
+        site_url:    siteUrl,
+        ref_content: getRefContent(),
       })
       .done(function (res) {
         if (!res.success) {
@@ -159,11 +164,12 @@
       $preview.hide().empty();
 
       $.post(wpAiSeo.ajaxUrl, {
-        action:   'wp_ai_seo_generate_tags',
-        nonce:    wpAiSeo.nonce,
-        post_id:  wpAiSeo.postId,
-        title:    title,
-        site_url: siteUrl,
+        action:      'wp_ai_seo_generate_tags',
+        nonce:       wpAiSeo.nonce,
+        post_id:     wpAiSeo.postId,
+        title:       title,
+        site_url:    siteUrl,
+        ref_content: getRefContent(),
       })
       .done(function (res) {
         if (!res.success) {
@@ -314,6 +320,12 @@
     var keywords = $('#wp_ai_seo_keywords').val()
       || $('input[name="post-seo_post_meta[_seo_metakey]"]').val()
       || '';
+    var seoTitle = $('#wp_ai_seo_title').val()
+      || $('input[name="post-seo_post_meta[_seo_title]"]').val()
+      || '';
+    var seoDesc = $('#wp_ai_seo_description').val()
+      || $('textarea[name="post-seo_post_meta[_seo_desc]"]').val()
+      || '';
 
     $.post(wpAiSeo.ajaxUrl, {
       action:         'wp_ai_seo_generate_content',
@@ -323,6 +335,9 @@
       site_url:       siteUrl,
       content_length: length,
       keywords:       keywords,
+      seo_title:      seoTitle,
+      seo_desc:       seoDesc,
+      ref_content:    getRefContent(),
     })
     .done(function (res) {
       stopProgressAnimation(100);

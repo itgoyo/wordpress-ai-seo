@@ -38,8 +38,9 @@ class WP_AI_SEO_Ajax_Handler {
         self::verify_request();
         $post_id  = self::get_post_id();
         $post     = get_post( $post_id );
-        $title    = sanitize_text_field( wp_unslash( $_POST['title'] ?? $post->post_title ) );
-        $site_url = esc_url_raw( wp_unslash( $_POST['site_url'] ?? '' ) );
+        $title       = sanitize_text_field( wp_unslash( $_POST['title'] ?? $post->post_title ) );
+        $site_url    = esc_url_raw( wp_unslash( $_POST['site_url'] ?? '' ) );
+        $ref_content = sanitize_textarea_field( wp_unslash( $_POST['ref_content'] ?? '' ) );
 
         $url_context = '';
         if ( ! empty( $site_url ) ) {
@@ -49,10 +50,15 @@ class WP_AI_SEO_Ajax_Handler {
             }
         }
 
+        $ref_section = '';
+        if ( ! empty( $ref_content ) ) {
+            $ref_section = "\n\n以下是用户提供的参考资料（请优先提炼其中的核心信息辅助生成 SEO 元信息）：\n{$ref_content}";
+        }
+
         $prompt = <<<PROMPT
 你是专业的中文 SEO 专家。请根据以下文章标题，生成适合 Google 收录的 SEO 元信息。
 
-文章标题：{$title}{$url_context}
+文章标题：{$title}{$ref_section}{$url_context}
 
 请严格按以下 JSON 格式输出（不要输出任何说明文字，只输出 JSON）：
 {
@@ -96,8 +102,9 @@ PROMPT;
         self::verify_request();
         $post_id  = self::get_post_id();
         $post     = get_post( $post_id );
-        $title    = sanitize_text_field( wp_unslash( $_POST['title'] ?? $post->post_title ) );
-        $site_url = esc_url_raw( wp_unslash( $_POST['site_url'] ?? '' ) );
+        $title       = sanitize_text_field( wp_unslash( $_POST['title'] ?? $post->post_title ) );
+        $site_url    = esc_url_raw( wp_unslash( $_POST['site_url'] ?? '' ) );
+        $ref_content = sanitize_textarea_field( wp_unslash( $_POST['ref_content'] ?? '' ) );
 
         $url_context = '';
         if ( ! empty( $site_url ) ) {
@@ -107,10 +114,15 @@ PROMPT;
             }
         }
 
+        $ref_section = '';
+        if ( ! empty( $ref_content ) ) {
+            $ref_section = "\n\n用户提供的参考资料：\n{$ref_content}";
+        }
+
         $prompt = <<<PROMPT
 你是 SEO 专家。请根据以下文章信息，生成适合作为 WordPress 标签的中文关键词列表。
 
-文章标题：{$title}{$url_context}
+文章标题：{$title}{$ref_section}{$url_context}
 
 要求：
 - 生成 8 到 12 个标签
@@ -150,11 +162,14 @@ PROMPT;
         self::verify_request();
         $post_id  = self::get_post_id();
         $post     = get_post( $post_id );
-        $title    = sanitize_text_field( wp_unslash( $_POST['title'] ?? $post->post_title ) );
-        $site_url = esc_url_raw( wp_unslash( $_POST['site_url'] ?? '' ) );
-        $keywords = sanitize_text_field( wp_unslash( $_POST['keywords'] ?? '' ) );
-        $length   = (int) ( $_POST['content_length'] ?? 1500 );
-        $length   = in_array( $length, array( 800, 1500, 2500, 4000 ), true ) ? $length : 1500;
+        $title       = sanitize_text_field( wp_unslash( $_POST['title'] ?? $post->post_title ) );
+        $site_url    = esc_url_raw( wp_unslash( $_POST['site_url'] ?? '' ) );
+        $keywords    = sanitize_text_field( wp_unslash( $_POST['keywords'] ?? '' ) );
+        $seo_title   = sanitize_text_field( wp_unslash( $_POST['seo_title'] ?? '' ) );
+        $seo_desc    = sanitize_textarea_field( wp_unslash( $_POST['seo_desc'] ?? '' ) );
+        $ref_content = sanitize_textarea_field( wp_unslash( $_POST['ref_content'] ?? '' ) );
+        $length      = (int) ( $_POST['content_length'] ?? 1500 );
+        $length      = in_array( $length, array( 800, 1500, 2500, 4000 ), true ) ? $length : 1500;
 
         $url_context = '';
         if ( ! empty( $site_url ) ) {
@@ -172,16 +187,46 @@ PROMPT;
 SECTION;
         }
 
-        $keywords_section = '';
+        $ref_content_section = '';
+        if ( ! empty( $ref_content ) ) {
+            $ref_content_section = <<<SECTION
+
+## 用户提供的参考资料
+以下是用户提供的原始内容（可能包含套餐数据、产品参数、价格对比、原始笔记等），请：
+1. 将其中的结构化数据（套餐/功能/价格等）整理成 Markdown 对比表格
+2. 基于这些资料撰写 SEO 友好的介绍段落
+3. 确保表格数据与原始资料完全一致，不要捏造数字
+
+{$ref_content}
+SECTION;
+        }
+
+        $seo_meta_section = '';
+        $seo_meta_parts   = array();
+        if ( ! empty( $seo_title ) ) {
+            $seo_meta_parts[] = "- SEO 标题：{$seo_title}";
+        }
         if ( ! empty( $keywords ) ) {
-            $keywords_section = "\n**SEO 核心关键词：** {$keywords}\n（请务必在文章标题、副标题、段落中自然融入以上关键词，每个关键词在正文中至少出现 2-3 次）\n";
+            $seo_meta_parts[] = "- 核心关键词：{$keywords}（每个关键词在正文中至少自然出现 2-3 次）";
+        }
+        if ( ! empty( $seo_desc ) ) {
+            $seo_meta_parts[] = "- Meta 描述：{$seo_desc}";
+        }
+        if ( ! empty( $seo_meta_parts ) ) {
+            $seo_meta_list    = implode( "\n", $seo_meta_parts );
+            $seo_meta_section = <<<SECTION
+
+## 已确定的 SEO 元信息（必须严格遵守）
+以下是已确认的 SEO 定位，文章内容必须与之高度吻合，不得偏离主题：
+{$seo_meta_list}
+SECTION;
         }
 
         $prompt = <<<PROMPT
 你是一名专业的中文 SEO 内容创作专家。请为以下主题撰写一篇高质量、适合 Google 收录的中文文章。
 
 文章主题：{$title}
-{$keywords_section}{$site_context_section}
+{$seo_meta_section}{$ref_content_section}{$site_context_section}
 
 ## 写作要求
 
