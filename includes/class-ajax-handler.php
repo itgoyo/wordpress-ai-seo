@@ -76,9 +76,14 @@ PROMPT;
             wp_send_json_error( array( 'message' => 'AI 返回格式异常，请重试。原始内容：' . mb_substr( $result, 0, 200 ) ) );
         }
 
+        // 规范化关键词：拆分后去首尾空格再拼回，确保逗号后无空格
+        $raw_kw      = sanitize_text_field( $json['keywords'] ?? '' );
+        $kw_parts    = array_filter( array_map( 'trim', explode( ',', $raw_kw ) ) );
+        $clean_kw    = implode( ',', $kw_parts );
+
         wp_send_json_success( array(
             'seo_title'   => sanitize_text_field( $json['seo_title']   ?? '' ),
-            'keywords'    => sanitize_text_field( $json['keywords']     ?? '' ),
+            'keywords'    => $clean_kw,
             'description' => sanitize_textarea_field( $json['description'] ?? '' ),
         ) );
     }
